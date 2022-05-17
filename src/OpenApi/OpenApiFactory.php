@@ -47,6 +47,15 @@ class OpenApiFactory implements OpenApiFactoryInterface
                 ]
             ]
         ]);
+        $schemas['Token'] = new \ArrayObject([
+            "type" => "object",
+            "properties" => [
+                "token" => [
+                    "type" => "string",
+                    "readOnly" => true
+                ]
+            ]
+        ]);
 
         $pathItem = new PathItem(
             post: new Operation(
@@ -63,11 +72,11 @@ class OpenApiFactory implements OpenApiFactoryInterface
                 ),
                 responses: [
                     "200" => [
-                        "description" => "Utilisateur connecté",
+                        "description" => "Token JWT (Vous êtes connecté)",
                         "content" => [
                             "application/json" => [
                                 "schema" => [
-                                    '$ref' => "#/components/schemas/User-read.User"
+                                    '$ref' => "#/components/schemas/Token"
                                 ]
                             ]
                         ]
