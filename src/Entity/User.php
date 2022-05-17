@@ -2,52 +2,60 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Action\NotFoundAction;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\MeController;
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- */
-class User implements UserInterface
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ApiResource(
+    security : 'is_granted("ROLE_USER")',
+    collectionOperations: [
+        "me" => [
+            "pagination_enabled" => false,
+            "path" => "/me",
+            "method" => "get",
+            "controller" => MeController::class,
+            "read" => false,
+            "openapi_context" => [
+                "security" => ["bearerAuth" => []]
+            ]
+        ],
+    ],
+    itemOperations: [
+        "get" => [
+            "controller" => NotFoundAction::class,
+            "openapi_context" => ["summary" => "hidden"],
+            "read" => false,
+            "output" => false
+        ]
+    ],
+    normalizationContext: ["groups" => ["read:User"]]
+)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Groups({"public"})
-     */
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:User'])]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"public"})
-     */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Groups(['read:User'])]
     private $email;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    #[ORM\Column(type: 'json')]
+    #[Groups(['read:User'])]
+    private $roles = ["ROLE_USER"];
 
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
+    #[Groups(['read:User'])]
     private $password;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\TaskList", mappedBy="user")
-     */
-    private $lists;
-
-    public function __construct()
-    {
-        $this->lists = new ArrayCollection();
-    }
-
 
     public function getId(): ?int
     {
@@ -71,9 +79,9 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getUserIdentifier(): string
     {
-        return (string)$this->email;
+        return (string) $this->email;
     }
 
     /**
@@ -82,7 +90,7 @@ class User implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-// guarantee every user at least has ROLE_USER
+        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -96,11 +104,11 @@ class User implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * @see PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return (string)$this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -113,53 +121,9 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getSalt()
-    {
-// not needed when using the "bcrypt" algorithm in security.yaml
-    }
-
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials()
     {
-// If you store any temporary, sensitive data on the user, clear it here
-// $this->plainPassword = null;
-    }
-
-    /**
-     * @return Collection|TaskList[]
-     */
-    public function getLists(): Collection
-    {
-        return $this->lists;
-    }
-
-    public function addList(TaskList $list): self
-    {
-        if (!$this->lists->contains($list)) {
-            $this->lists[] = $list;
-            $list->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeList(TaskList $list): self
-    {
-        if ($this->lists->contains($list)) {
-            $this->lists->removeElement($list);
-// set the owning side to null (unless already changed)
-            if ($list->getUser() === $this) {
-                $list->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getUserIdentifier(): string
-    {
-        // TODO: Implement getUserIdentifier() method.
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }

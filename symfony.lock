@@ -1,4 +1,18 @@
 {
+    "api-platform/core": {
+        "version": "2.6",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.5",
+            "ref": "05b57782a78c21a664a42055dc11cf1954ca36bb"
+        },
+        "files": [
+            "./config/packages/api_platform.yaml",
+            "./config/routes/api_platform.yaml",
+            "./src/Entity/.gitignore"
+        ]
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -74,6 +88,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
+    "fig/link-util": {
+        "version": "1.2.0"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.12"
     },
@@ -101,8 +118,32 @@
     "namshi/jose": {
         "version": "7.2.3"
     },
+    "nelmio/cors-bundle": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.5",
+            "ref": "6bea22e6c564fba3a1391615cada1437d0bde39c"
+        },
+        "files": [
+            "./config/packages/nelmio_cors.yaml"
+        ]
+    },
     "nikic/php-parser": {
         "version": "v4.13.2"
+    },
+    "phpdocumentor/reflection-common": {
+        "version": "2.2.0"
+    },
+    "phpdocumentor/reflection-docblock": {
+        "version": "5.3.0"
+    },
+    "phpdocumentor/type-resolver": {
+        "version": "1.6.1"
+    },
+    "phpstan/phpdoc-parser": {
+        "version": "1.5.1"
     },
     "psr/cache": {
         "version": "3.0.0"
@@ -113,11 +154,17 @@
     "psr/event-dispatcher": {
         "version": "1.0.0"
     },
+    "psr/link": {
+        "version": "2.0.1"
+    },
     "psr/log": {
         "version": "3.0.0"
     },
     "stella-maris/clock": {
         "version": "0.1.4"
+    },
+    "symfony/asset": {
+        "version": "v6.0.7"
     },
     "symfony/cache": {
         "version": "v6.0.8"
@@ -160,6 +207,9 @@
     },
     "symfony/event-dispatcher-contracts": {
         "version": "v3.0.1"
+    },
+    "symfony/expression-language": {
+        "version": "v6.0.8"
     },
     "symfony/filesystem": {
         "version": "v6.0.7"
@@ -277,6 +327,9 @@
     "symfony/security-http": {
         "version": "v6.0.8"
     },
+    "symfony/serializer": {
+        "version": "v6.0.8"
+    },
     "symfony/service-contracts": {
         "version": "v3.0.1"
     },
@@ -305,16 +358,37 @@
             "./templates/base.html.twig"
         ]
     },
+    "symfony/validator": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "c32cfd98f714894c4f128bb99aa2530c1227603c"
+        },
+        "files": [
+            "./config/packages/validator.yaml"
+        ]
+    },
     "symfony/var-dumper": {
         "version": "v6.0.8"
     },
     "symfony/var-exporter": {
         "version": "v6.0.8"
     },
+    "symfony/web-link": {
+        "version": "v6.0.3"
+    },
     "symfony/yaml": {
         "version": "v6.0.3"
     },
     "twig/twig": {
         "version": "v3.4.0"
+    },
+    "webmozart/assert": {
+        "version": "1.10.0"
+    },
+    "willdurand/negotiation": {
+        "version": "3.1.0"
     }
 }
