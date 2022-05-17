@@ -27,10 +27,10 @@ class OpenApiFactory implements OpenApiFactoryInterface
             new Operation("ping-id", [], [], "Répond")));
 
         $schemas = $openApi->getComponents()->getSecuritySchemes();
-        $schemas['cookieAuth'] = new \ArrayObject([
-            "type" => "apiKey",
-            "in" => "cookie",
-            "name" => "PHPSESSID"
+        $schemas['bearerAuth'] = new \ArrayObject([
+            "type" => "http",
+            "schema" => "bearer",
+            "bearerFormat" => "JWT"
         ]);
 
         $openApi->getComponents()->getSchemas();
